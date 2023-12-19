@@ -1,12 +1,18 @@
+from typing import Optional
+
 import yaml
 
+from .pypacerconfig import PyPacerConfig
 
-class PyPacer(object):
-    def __init__(self, *args, **kwargs):
-        self.temp = "Hello World!"
 
-    def parse_from_yaml(self, stream: str, *args, **kwargs):
-        self.temp = yaml.safe_load(stream)
+class PyPacer:
+    def __init__(self):
+        self.config: Optional[PyPacerConfig] = None
 
-    def output(self, *args, **kwargs) -> str:
-        return self.temp
+    def parse_from_yaml(self, stream: str):
+        y = yaml.safe_load(stream)
+        self.config = PyPacerConfig(**y)
+        self.config.check()
+
+    def output(self) -> str:
+        return str(self.config)
