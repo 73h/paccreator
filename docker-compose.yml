@@ -1,0 +1,7 @@
+services:
+  pypacer:
+    restart: "no"
+    build:
+      context: .
+    volumes:
+      - ./src:/src
