@@ -14,5 +14,16 @@ class PyPacer:
         self.config = PyPacerConfig(**y)
         self.config.check()
 
+    def _get_javascript(self) -> str:
+        default_proxy = [p for p in self.config.proxies if p.name == self.config.default_proxy][0].proxy
+        return """
+        function FindProxyForURL(url, host) {{
+            host = host.toLowerCase();
+            // at this point they are placed exclusions
+            return "{0}";
+        }}
+        """.format(default_proxy)
+
     def output(self) -> str:
-        return str(self.config)
+        # IDEA: implement output with jinja
+        return self._get_javascript()

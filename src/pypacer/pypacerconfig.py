@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 def d(x) -> dict:
@@ -11,6 +11,7 @@ class Proxy:
     name: str
     proxy: str
     description: str = ""
+    targets: list[str] = field(default_factory=list)
 
 
 @dataclass

@@ -11,6 +11,9 @@ if __name__ == "__main__":
         - name: proxy-2
           proxy: DIRECT
           description: proxy-2
+          targets:
+            - "*.example.com"
+            - "*.internal"
     default_proxy: proxy-1
     """
     p.parse_from_yaml(yaml)
