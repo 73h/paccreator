@@ -21,9 +21,12 @@ class PyPacerConfig:
     description: str = "PAC File for my great company"
 
     def __post_init__(self):
+        # Nested classes in a list are not automatically instantiated
         proxies = []
         for proxy in self.proxies:
-            proxies.append(Proxy(**dict(d(proxy))))
+            # Unnecessary, but the development environment otherwise complains because "proxy" is not a dict - grrrr
+            proxy = d(proxy)
+            proxies.append(Proxy(**dict(proxy)))
         self.proxies = proxies
 
     def check(self):
