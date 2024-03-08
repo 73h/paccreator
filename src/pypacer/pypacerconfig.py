@@ -29,6 +29,7 @@ class PyPacerConfig:
 
     def validate(self):
         self._validate_proxies()
+        self._validate_routings()
 
     def _validate_proxies(self):
         if self.default not in [p for p in self.proxies.keys()]:
@@ -39,7 +40,6 @@ class PyPacerConfig:
             # ToDo: Check proxy addresses
 
     def _validate_routings(self):
-
         for routing in self.routings:
             # test if the proxy exists
             if routing.proxy not in [p for p in self.proxies.keys()]:
