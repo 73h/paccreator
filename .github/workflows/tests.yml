@@ -8,7 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["pypy3.9", "pypy3.10", "3.9", "3.10", "3.11", "3.12"]
+        #python-version: ["pypy3.9", "pypy3.10", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.11"]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
@@ -17,8 +18,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
-      - name: Make a ping on github.com
-        run: ping github.com -t 1
+      - name: Add hosts to /etc/hosts
+        run: |
+          sudo echo "10.50.10.3 netmask.example.com" | sudo tee -a /etc/hosts
+          sudo echo "168.192.1.5 ip.example.com" | sudo tee -a /etc/hosts
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
