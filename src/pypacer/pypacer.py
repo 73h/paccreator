@@ -9,20 +9,22 @@ class PyPacer:
     def __init__(self):
         self.config: Optional[PyPacerConfig] = None
 
-    def parse_from_yaml(self, stream: str):
+    def load_config_from_yaml(self, stream: str):
         y = yaml.safe_load(stream)
         self.config = PyPacerConfig(**y)
-        self.config.check()
+        self.config.validate()
+
+    def _get_default_proxy_route(self) -> str:
+        return self.config.proxies[self.config.default].route
 
     def _get_javascript(self) -> str:
-        default_proxy = [p for p in self.config.proxies if p.name == self.config.default_proxy][0].proxy
         return """
         function FindProxyForURL(url, host) {{
             host = host.toLowerCase();
             // at this point they are placed exclusions
             return "{0}";
         }}
-        """.format(default_proxy)
+        """.format(self._get_default_proxy_route())
 
     def output(self) -> str:
         # IDEA: implement output with jinja

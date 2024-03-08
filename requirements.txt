@@ -1,1 +1,3 @@
 pyyaml
+watching-testrunner
+pytest

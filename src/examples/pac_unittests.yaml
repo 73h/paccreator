@@ -1,0 +1,21 @@
+description: A normal proxy script
+proxies:
+  DIRECT:
+    description: take the direct route
+    route: "DIRECT"
+  PROXY_A:
+    description: take the proxy A route
+    route: "PROXY localhost:8080"
+  PROXY_B:
+    description: take the proxy B route
+    route: "PROXY localhost:8081"
+default: PROXY_A
+routings:
+  - hosts:
+      - ".example.com"
+    proxy: DIRECT
+  - hosts:
+      - "example.org"
+      - "foo.example.net"
+      - "bar.example.net"
+    proxy: PROXY_B
