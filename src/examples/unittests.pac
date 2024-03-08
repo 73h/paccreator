@@ -1,5 +1,5 @@
 function FindProxyForURL(url, host) {
-    var host = host.toLowerCase();
+    host = host.toLowerCase();
     if (
            dnsDomainIs(host, "99.77.128.0/18")
         || dnsDomainIs(host, "127.0.0.0/24")

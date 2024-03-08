@@ -11,7 +11,7 @@ from pypacer.pypacerconfig import PyPacerConfig
 class TestPyPacer(unittest.TestCase):
 
     def setUp(self):
-        self.pac_file = open(os.path.join(location, "..", "examples", "pac_unittests.yaml"), "r").read()
+        self.pac_file = open(os.path.join(location, "..", "examples", "unittests.yaml"), "r").read()
 
     def test_load_config_from_yaml(self):
         p = PyPacer()
