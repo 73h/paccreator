@@ -1,4 +1,5 @@
 description: A normal proxy script
+version: 1.0
 proxies:
   DIRECT:
     description: take the direct route

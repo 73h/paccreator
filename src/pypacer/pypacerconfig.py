@@ -11,6 +11,7 @@ class Proxy:
 class PyPacerConfig:
     proxies: dict
     default: str
+    version: str = "1.0"
     description: str = "PAC File for my great company"
     routings: list = field(default_factory=lambda: [])
 
