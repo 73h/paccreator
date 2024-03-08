@@ -1,7 +1,9 @@
 from typing import Optional
 
 import yaml
+from jinja2 import Environment, FileSystemLoader
 
+from .helpers import location
 from .pypacerconfig import PyPacerConfig
 
 
@@ -18,14 +20,11 @@ class PyPacer:
         return self.config.proxies[self.config.default].route
 
     def _get_javascript(self) -> str:
-        return """
-        function FindProxyForURL(url, host) {{
-            host = host.toLowerCase();
-            // at this point they are placed exclusions
-            return "{0}";
-        }}
-        """.format(self._get_default_proxy_route())
+        environment = Environment(loader=FileSystemLoader(location))
+        template = environment.get_template("template.js")
+        return template.render(
+            default=self._get_default_proxy_route()
+        )
 
     def output(self) -> str:
-        # IDEA: implement output with jinja
         return self._get_javascript()

@@ -1,4 +1,6 @@
 pyyaml
+Jinja2
+PyPAC
 watching-testrunner
 pytest
 pytest-cov

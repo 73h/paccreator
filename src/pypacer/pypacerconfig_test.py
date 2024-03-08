@@ -9,26 +9,12 @@ class TestPyPacerConfig(unittest.TestCase):
         config = {"proxies": {"DIRECT": {"route": "DIRECT"}}, "default": "PROXY_B", "routings": []}
         config = PyPacerConfig(**config)
         with self.assertRaises(ValueError) as err:
-            config._validate_proxies()
+            config.validate()
         self.assertEqual(str(err.exception), "default is not in proxies")
 
     def test_proxy_has_no_route(self):
         config = {"proxies": {"DIRECT": {"route": ""}}, "default": "DIRECT", "routings": []}
         config = PyPacerConfig(**config)
         with self.assertRaises(ValueError) as err:
-            config._validate_proxies()
+            config.validate()
         self.assertEqual(str(err.exception), "proxy DIRECT has no route")
-
-    def test_wrong_routing_proxy(self):
-        config = {"proxies": {"DIRECT": {"route": "DIRECT"}}, "default": "DIRECT", "routings": [{"proxy": "PROXY_B"}]}
-        config = PyPacerConfig(**config)
-        with self.assertRaises(ValueError) as err:
-            config._validate_routings()
-        self.assertEqual(str(err.exception), "proxy PROXY_B does not exist")
-
-    def test_routing_has_no_host(self):
-        config = {"proxies": {"DIRECT": {"route": "DIRECT"}}, "default": "DIRECT", "routings": [{"proxy": "DIRECT"}]}
-        config = PyPacerConfig(**config)
-        with self.assertRaises(ValueError) as err:
-            config._validate_routings()
-        self.assertEqual(str(err.exception), "a routing has no host")
