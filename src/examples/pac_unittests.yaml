@@ -12,8 +12,7 @@ proxies:
     route: "PROXY localhost:8081"
 default: PROXY_A
 routings:
-  - hosts:
-      - ".example.com"
+  - host: ".example.com"
     proxy: DIRECT
   - hosts:
       - "example.org"
