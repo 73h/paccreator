@@ -1,9 +1,10 @@
+import os
 from typing import Optional
 
 import yaml
 from jinja2 import Environment, FileSystemLoader
 
-from .helpers import location
+from .helpers import location, sort_by_rating
 from .pypacerconfig import PyPacerConfig
 
 
@@ -21,10 +22,15 @@ class PyPacer:
 
     def _get_javascript(self) -> str:
         environment = Environment(loader=FileSystemLoader(location))
-        template = environment.get_template("template.js")
+        template = environment.get_template("template.js.jinja")
+        proxies = [p for p in self.config.proxies.values()]
+        proxies.sort(key=sort_by_rating)
         return template.render(
-            default=self._get_default_proxy_route()
+            default=self._get_default_proxy_route(),
+            proxies=proxies,
         )
 
     def output(self) -> str:
-        return self._get_javascript()
+        output = self._get_javascript()
+        open(os.path.join(location, "output.pac"), "w").write(output)
+        return output

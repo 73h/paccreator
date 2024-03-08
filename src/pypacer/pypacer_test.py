@@ -28,10 +28,10 @@ class TestPyPacer(unittest.TestCase):
         p = PyPacer()
         p.load_config_from_yaml(self.pac_file)
         pac_file = PACFile(p.output())
-        assert pac_file.find_proxy_for_url("foo.bar", "foo.bar") == "PROXY localhost:8080"
+        self.assertEqual(pac_file.find_proxy_for_url("foo.bar", "foo.bar"), "PROXY localhost:8080")
 
     def test_output_foo_example_com(self):
         p = PyPacer()
         p.load_config_from_yaml(self.pac_file)
         pac_file = PACFile(p.output())
-        # assert pac_file.find_proxy_for_url("", "foo.example.com") == "PROXY localhost:8081"
+        self.assertEqual(pac_file.find_proxy_for_url("foo.example.com", "foo.example.com"), "PROXY localhost:8081")
