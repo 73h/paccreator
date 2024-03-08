@@ -4,10 +4,11 @@ function FindProxyForURL(url, host) {
     if (
         {%- for target in proxy.targets %}
         {% if loop.index > 1 %}|| {% else %}   {% endif -%}
-        {%- if target.type == "HOST" -%}localHostOrDomainIs
-        {%- else -%}dnsDomainIs
+        {%- if target.type == "HOST" -%}localHostOrDomainIs(host, "{{ target.target }}")
+        {%- elif target.type == "HOSTS" -%}dnsDomainIs(host, "{{ target.target }}")
+        {%- elif target.type == "NET_MASK" -%}isInNet(host, "{{ target.netmask[0] }}", "{{ target.netmask[1] }}")
+        {%- else -%}host === "{{ target.target }}"
         {%- endif -%}
-        (host, "{{ target.target }}")
         {%- endfor %}
     ) { return "{{ proxy.route }}"; }
     {%- endfor %}

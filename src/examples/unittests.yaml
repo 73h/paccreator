@@ -1,22 +1,28 @@
 description: A normal proxy script
 version: 1.0
-default: PROXY_A
+default: PROXY_DEFAULT
 proxies:
   DIRECT:
     description: take the direct route
     route: "DIRECT"
     targets:
       - ".example.com"
-  PROXY_A:
+  PROXY_NET_MASKS:
     description: take the proxy A route
-    route: "PROXY localhost:8080"
+    route: "PROXY netmask.example.com"
     targets:
       - "99.77.128.0/18"
-      - "127.0.0.0/24"
-  PROXY_B:
+      - "140.82.121.0/24"
+      - "10.0.0.0/8"
+      - "127.0.0.1"
+  PROXY_COMPANY:
     description: take the proxy B route
-    route: "PROXY localhost:8081"
+    route: "PROXY company.example.com"
     targets:
       - "example.com"
       - "foo.example.com"
       - "bar.example.com"
+  PROXY_DEFAULT:
+    description: take the default proxy route
+    route: "PROXY default.example.com"
+    targets: []

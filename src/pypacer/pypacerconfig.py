@@ -1,19 +1,24 @@
 from dataclasses import dataclass, field
 
-from pypacer.helpers import get_target_type
+from pypacer.helpers import get_target_type, compute_netmask
 
 
 class Target:
     def __init__(self, target: str):
         self.target = target
-        self.type = get_target_type(target)
         self.rating = 0
+        self.type = get_target_type(target)
+        self.netmask = None
+        if self.type == "NET_MASK":
+            self.netmask = compute_netmask(self.target)
 
     def recognize_overlaps(self, targets: list):
         if self.type == "HOSTS":
             for target in targets:
                 if target.type == "HOST" and target.target.endswith(self.target):
                     self.rating = target.rating + 1
+        if self.type == "NET_MASK":
+            self.rating = self.rating + 1
 
 
 @dataclass

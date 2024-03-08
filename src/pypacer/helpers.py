@@ -1,3 +1,4 @@
+import ipaddress
 import os
 import re
 
@@ -8,7 +9,7 @@ def get_target_type(target: str) -> str:
     if re.fullmatch(r"[0-9.]+", target):
         return "IP"
     elif re.fullmatch(r"[0-9./]+", target):
-        return "IP_MASK"
+        return "NET_MASK"
     elif target.startswith("."):
         return "HOSTS"
     return "HOST"
@@ -19,3 +20,8 @@ def sort_by_rating(proxy):
     for target in proxy.targets:
         rating += target.rating
     return rating
+
+
+def compute_netmask(netmask) -> list[str]:
+    ip4_network = ipaddress.ip_network(netmask)
+    return ip4_network.with_netmask.split("/")

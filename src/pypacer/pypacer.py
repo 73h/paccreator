@@ -22,7 +22,7 @@ class PyPacer:
     def _get_javascript(self) -> str:
         environment = Environment(loader=FileSystemLoader(location))
         template = environment.get_template("template.js.jinja")
-        proxies = [p for p in self.config.proxies.values()]
+        proxies = [p for p in self.config.proxies.values() if len(p.targets) > 0]
         proxies.sort(key=sort_by_rating)
         return template.render(
             default=self._get_default_proxy_route(),
