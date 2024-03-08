@@ -1,3 +1,4 @@
 pyyaml
 watching-testrunner
 pytest
+pytest-cov
