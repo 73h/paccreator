@@ -15,6 +15,10 @@ routings:
   - host: ".example.com"
     proxy: DIRECT
   - hosts:
+      - "99.77.128.0/18"
+      - "127.0.0.0/24"
+    proxy: PROXY_A
+  - hosts:
       - "example.org"
       - "foo.example.net"
       - "bar.example.net"
