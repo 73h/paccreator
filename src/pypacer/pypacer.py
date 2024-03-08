@@ -1,4 +1,3 @@
-import os
 from typing import Optional
 
 import yaml
@@ -32,5 +31,4 @@ class PyPacer:
 
     def output(self) -> str:
         output = self._get_javascript()
-        open(os.path.join(location, "..", "examples", "unittests.pac"), "w").write(output)
         return output
