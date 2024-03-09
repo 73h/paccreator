@@ -33,16 +33,6 @@ def is_hostname(hostname):
     return False
 
 
-def is_regex(regex):
-    if not re.match(r"^/.+/[ailmsux]*$", regex, re.IGNORECASE):
-        return False
-    try:
-        re.compile(regex)
-        return True
-    except re.error:
-        return False
-
-
 def get_target_type(target: str) -> str:
     if is_ipaddress(target):
         return "IP"
@@ -52,9 +42,12 @@ def get_target_type(target: str) -> str:
         if target.startswith("."):
             return "HOSTS"
         return "HOST"
-    elif is_regex(target):
-        return "REGEX"
-    return "STRING"
+    else:
+        if target.startswith("."):
+            return "STRING_R"
+        if target.endswith("."):
+            return "STRING_L"
+        return "STRING"
 
 
 def sort_by_rating(proxy):

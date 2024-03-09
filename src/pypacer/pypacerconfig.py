@@ -17,7 +17,11 @@ class Target:
         if self.type == "HOSTS":
             for target in targets:
                 if target.type == "HOST" and target.target.endswith(self.target):
-                    self.rating = target.rating + 1
+                    target.rating = target.rating - 1
+        if self.type == "IP":
+            self.rating = 1
+        if self.type == "NETWORK":
+            self.rating = 2
 
 
 @dataclass

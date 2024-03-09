@@ -1,4 +1,4 @@
-description: A normal proxy script
+description: For the unittests, hopefully no real script should look like this. ;)
 version: 1.0
 default: PROXY_DEFAULT
 proxies:
@@ -7,21 +7,41 @@ proxies:
     route: "DIRECT"
     targets:
       - ".example.com"
-  PROXY_NET_MASKS:
-    description: take the proxy A route
-    route: "PROXY netmask.example.com"
-    targets:
-      - "93.184.0.0/16"
-      - "example.net"
-      - "192.0.0.170"
-      - "127.0.0.1"
-  PROXY_COMPANY:
-    description: take the proxy B route
-    route: "PROXY company.example.com"
+  PROXY_DOMAIN_OVERLAPS:
+    description: here domains overlap with the default route
+    route: "PROXY domain-overlaps.example.com"
     targets:
       - "example.com"
       - "foo.example.com"
+      - "foo.example.net"
+  PROXY_NETMASK:
+    description: a proxy for netmask
+    route: "PROXY netmask.example.com"
+    targets:
+      - "93.184.0.0/16"
+      - "2001:0db8:85a3:08d3::/64"
+  PROXY_IP:
+    description: a proxy for IPs
+    route: "PROXY ip.example.com"
+    targets:
+      - "192.0.0.170"
+      - "127.0.0.1"
+  PROXY_STRING:
+    description: a proxy for string matches
+    route: "PROXY string.example.com"
+    targets:
+      - "10."
+      - ".102.123"
+      - "10"
+  PROXY_MIXED:
+    description: a proxy for mixed matches
+    route: "PROXY mixed.example.com"
+    targets:
+      - "example.net"
       - "bar.example.com"
+      - "bar.example.net"
+      - "20.10.10.0/24"
+      - "130.131.132.133"
   PROXY_DEFAULT:
     description: take the default proxy route
     route: "PROXY default.example.com"

@@ -1,6 +1,5 @@
 function FindProxyForURL(url, host) {
     host = host.toLowerCase();
-    url = url.toLowerCase();
     {%- for proxy in proxies %}
     if (
         {%- for target in proxy.targets %}
@@ -8,8 +7,9 @@ function FindProxyForURL(url, host) {
         {%- if target.type == "HOST" -%}localHostOrDomainIs(host, "{{ target.target }}")
         {%- elif target.type == "HOSTS" -%}dnsDomainIs(host, "{{ target.target }}")
         {%- elif target.type == "NETWORK" -%}isInNet(host, "{{ target.netmask[0] }}", "{{ target.netmask[1] }}")
-        {%- elif target.type == "REGEX" -%}shExpMatch(url, "*{{ target.target }}*")
         {%- elif target.type == "IP" -%}dnsResolve(host) === "{{ target.target }}"
+        {%- elif target.type == "STRING_L" -%}host.substring(0, {{ target.target|length }}) === "{{ target.target }}"
+        {%- elif target.type == "STRING_R" -%}host.substring(host.length - {{ target.target|length }}) === "{{ target.target }}"
         {%- else -%}host === "{{ target.target }}"
         {%- endif -%}
         {%- endfor %}

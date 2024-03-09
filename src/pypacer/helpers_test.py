@@ -1,7 +1,7 @@
 import unittest
 
 from pypacer.helpers import get_target_type, sort_by_rating, is_ipaddress, is_network, \
-    is_hostname, is_regex
+    is_hostname
 from pypacer.pypacerconfig import PyPacerConfig
 
 
@@ -32,11 +32,14 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(get_target_type("example.com"), "HOST")
         self.assertEqual(get_target_type("example.com."), "HOST")
 
-    def test_target_type_regex(self):
-        self.assertEqual(get_target_type("/10./"), "REGEX")
+    def test_target_type_string_l(self):
+        self.assertEqual(get_target_type("10."), "STRING_L")
+
+    def test_target_type_string_r(self):
+        self.assertEqual(get_target_type(".102.123"), "STRING_R")
 
     def test_target_type_string(self):
-        self.assertEqual(get_target_type("10."), "STRING")
+        self.assertEqual(get_target_type("10"), "STRING")
 
     def test_is_hostname(self):
         self.assertTrue(is_hostname("example.com"))
@@ -48,9 +51,6 @@ class TestHelpers(unittest.TestCase):
         self.assertTrue(is_hostname(".exämple.com."))
         self.assertTrue(is_hostname("exämple.com."))
 
-    def test_is_regex(self):
-        self.assertTrue(is_regex("/10./"))
-
     def test_sort_by_rating(self):
         config = {"proxies": {"A": {"route": "A", "targets": [".example.com"]},
                               "B": {"route": "B", "targets": ["foo.example.com"]}}, "default": "A"}
@@ -58,6 +58,6 @@ class TestHelpers(unittest.TestCase):
         config.validate()
         proxies = [p for p in config.proxies.values()]
         self.assertEqual(proxies[0].route, "A")
-        self.assertEqual(proxies[0].targets[0].rating, 1)
+        self.assertEqual(proxies[1].targets[0].rating, -1)
         proxies.sort(key=sort_by_rating)
         self.assertEqual(proxies[0].route, "B")
