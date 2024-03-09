@@ -18,7 +18,7 @@ class Target:
         if self.type == "HOSTS":
             for target in targets:
                 if target.type == "HOST" and target.target.endswith(self.target):
-                    self.rating = target.rating + 1
+                    self.rating = target.rating + 2
         if self.type == "NET_MASK":
             self.rating = self.rating + 1
 
