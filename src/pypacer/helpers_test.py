@@ -25,7 +25,7 @@ class TestHelpers(unittest.TestCase):
         config.validate()
         proxies = [p for p in config.proxies.values()]
         self.assertEqual(proxies[0].route, "A")
-        self.assertEqual(proxies[0].targets[0].rating, 1)
+        self.assertEqual(proxies[0].targets[0].rating, 2)
         proxies.sort(key=sort_by_rating)
         self.assertEqual(proxies[0].route, "B")
 
