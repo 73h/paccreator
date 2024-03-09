@@ -6,6 +6,11 @@ function FindProxyForURL(url, host) {
         || localHostOrDomainIs(host, "foo.example.net")
     ) { return "PROXY domain-overlaps.example.com"; }
     if (
+           localHostOrDomainIs(host, "example.net")
+        || localHostOrDomainIs(host, "bar.example.com")
+        || localHostOrDomainIs(host, "bar.example.net")
+    ) { return "PROXY mixed.example.com"; }
+    if (
            dnsDomainIs(host, ".example.com")
     ) { return "DIRECT"; }
     if (
@@ -18,10 +23,7 @@ function FindProxyForURL(url, host) {
         || dnsResolve(host) === "127.0.0.1"
     ) { return "PROXY ip.example.com"; }
     if (
-           localHostOrDomainIs(host, "example.net")
-        || localHostOrDomainIs(host, "bar.example.com")
-        || localHostOrDomainIs(host, "bar.example.net")
-        || isInNet(host, "20.10.10.0", "255.255.255.0")
+           isInNet(host, "20.10.10.0", "255.255.255.0")
         || dnsResolve(host) === "130.131.132.133"
     ) { return "PROXY mixed.example.com"; }
     if (

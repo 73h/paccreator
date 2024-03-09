@@ -32,6 +32,7 @@ class TestPyPacer(unittest.TestCase):
         pac_file = PACFile(p.output())
         self.assertEqual(pac_file.find_proxy_for_url("", "foo.bar"), "PROXY default.example.com")
         self.assertEqual(pac_file.find_proxy_for_url("", "foo.example.com"), "PROXY domain-overlaps.example.com")
+        self.assertEqual(pac_file.find_proxy_for_url("", "bar.example.com"), "PROXY mixed.example.com")
         self.assertEqual(pac_file.find_proxy_for_url("", "example.org"), "PROXY netmask.example.com")
         self.assertEqual(pac_file.find_proxy_for_url("", "ipv4only.arpa"), "PROXY ip.example.com")
         self.assertEqual(pac_file.find_proxy_for_url("", "10.11.12.13"), "PROXY string.example.com")

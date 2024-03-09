@@ -34,7 +34,7 @@ proxies:
       - ".102.123"
       - "10"
   PROXY_MIXED:
-    description: a proxy for mixed matches
+    description: a proxy for mixed matches, this should be split up
     route: "PROXY mixed.example.com"
     targets:
       - "example.net"

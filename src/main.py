@@ -1,19 +1,25 @@
-import os
-
 from pypacer import PyPacer
-from pypacer.helpers import location
 
 if __name__ == "__main__":
     p = PyPacer()
-    with open(os.path.join(location, "..", "examples", "unittests.yaml"), "r") as f:
-        p.load_from_yaml(f.read())
-        print(p.output())
-
     simple_proxy = """
+    description: "Simple proxy"
     proxies:
-        DIRECT:
-            route: DIRECT
-    default: DIRECT
+      DIRECT:
+        route: "DIRECT"
+        targets:
+          - "10.0.0.0/8"
+          - ".my-company.com"
+      MYPROXY:
+        route: "PROXY proxy.my-company.com:80"
+        targets:
+          - "www.my-company.com"
+          - "contact.my-company.com"
+      SPECIAL_PROXY:
+        route: "PROXY proxy.my-company.com:8080"
+        targets:
+          - "datacenter.my-company.com"
+    default: MYPROXY
     """
     p.load_from_yaml(str(simple_proxy))
     print(p.output())
