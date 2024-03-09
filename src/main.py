@@ -4,7 +4,16 @@ from pypacer import PyPacer
 from pypacer.helpers import location
 
 if __name__ == "__main__":
-    pac_file = open(os.path.join(location, "..", "examples", "unittests.yaml"), "r").read()
     p = PyPacer()
-    p.load_config_from_yaml(pac_file)
+    with open(os.path.join(location, "..", "examples", "unittests.yaml"), "r") as f:
+        p.load_from_yaml(f.read())
+        print(p.output())
+
+    simple_proxy = """
+    proxies:
+        DIRECT:
+            route: DIRECT
+    default: DIRECT
+    """
+    p.load_from_yaml(str(simple_proxy))
     print(p.output())

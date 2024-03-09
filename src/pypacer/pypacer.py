@@ -11,7 +11,7 @@ class PyPacer:
     def __init__(self):
         self.config: Optional[PyPacerConfig] = None
 
-    def load_config_from_yaml(self, stream: str):
+    def load_from_yaml(self, stream: str):
         y = yaml.safe_load(stream)
         self.config = PyPacerConfig(**y)
         self.config.validate()
