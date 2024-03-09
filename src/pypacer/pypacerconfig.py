@@ -1,6 +1,7 @@
+import ipaddress
 from dataclasses import dataclass, field
 
-from pypacer.helpers import get_target_type, compute_netmask
+from pypacer.helpers import get_target_type
 
 
 class Target:
@@ -9,18 +10,14 @@ class Target:
         self.rating = 0
         self.type = get_target_type(target)
         self.netmask = None
-        if self.type == "NET_MASK":
-            self.netmask = compute_netmask(self.target)
-        elif self.type == "IP4":
-            self.netmask = compute_netmask(f"{self.target}/32")
+        if self.type == "NETWORK":
+            self.netmask = ipaddress.ip_network(self.target).with_netmask.split("/")
 
     def recognize_overlaps(self, targets: list):
         if self.type == "HOSTS":
             for target in targets:
                 if target.type == "HOST" and target.target.endswith(self.target):
-                    self.rating = target.rating + 2
-        if self.type == "NET_MASK":
-            self.rating = self.rating + 1
+                    self.rating = target.rating + 1
 
 
 @dataclass
