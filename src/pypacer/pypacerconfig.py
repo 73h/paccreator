@@ -11,6 +11,8 @@ class Target:
         self.netmask = None
         if self.type == "NET_MASK":
             self.netmask = compute_netmask(self.target)
+        elif self.type == "IP4":
+            self.netmask = compute_netmask(f"{self.target}/32")
 
     def recognize_overlaps(self, targets: list):
         if self.type == "HOSTS":

@@ -10,7 +10,7 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(get_target_type("127.0.0.0/24"), "NET_MASK")
 
     def test_target_type_ip(self):
-        self.assertEqual(get_target_type("127.0.0.1"), "IP")
+        self.assertEqual(get_target_type("127.0.0.1"), "IP4")
 
     def test_target_type_hosts(self):
         self.assertEqual(get_target_type(".example.com"), "HOSTS")
@@ -30,5 +30,5 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(proxies[0].route, "B")
 
     def test_compute_netmask(self):
-        self.assertEqual(compute_netmask("140.82.121.0/24"), ["140.82.121.0", "255.255.255.0"])
         self.assertEqual(compute_netmask("99.77.128.0/18"), ["99.77.128.0", "255.255.192.0"])
+        self.assertEqual(compute_netmask("93.184.0.0/16"), ["93.184.0.0", "255.255.0.0"])

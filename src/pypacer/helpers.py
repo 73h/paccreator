@@ -6,8 +6,8 @@ location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__))
 
 
 def get_target_type(target: str) -> str:
-    if re.fullmatch(r"[0-9.]+", target):
-        return "IP"
+    if re.fullmatch(r"[0-9.]+", target) and target.count(".") == 3:
+        return "IP4"
     elif re.fullmatch(r"[0-9./]+", target):
         return "NET_MASK"
     elif target.startswith("."):

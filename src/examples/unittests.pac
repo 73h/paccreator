@@ -9,10 +9,10 @@ function FindProxyForURL(url, host) {
            dnsDomainIs(host, ".example.com")
     ) { return "DIRECT"; }
     if (
-           isInNet(host, "99.77.128.0", "255.255.192.0")
-        || isInNet(host, "140.82.121.0", "255.255.255.0")
-        || isInNet(host, "10.0.0.0", "255.0.0.0")
-        || host === "127.0.0.1"
+           isInNet(host, "93.184.0.0", "255.255.0.0")
+        || localHostOrDomainIs(host, "example.net")
+        || isInNet(host, "192.0.0.170", "255.255.255.255")
+        || isInNet(host, "127.0.0.1", "255.255.255.255")
     ) { return "PROXY netmask.example.com"; }
     return "PROXY default.example.com";
 }
