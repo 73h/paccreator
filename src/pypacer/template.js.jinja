@@ -1,4 +1,8 @@
 function FindProxyForURL(url, host) {
+    /*
+        Description: {{ description }}
+        Version: {{ version }}
+    */
     host = host.toLowerCase();
     {%- for proxy in proxies %}
     if (
@@ -13,7 +17,10 @@ function FindProxyForURL(url, host) {
         {%- else -%}host === "{{ target.target }}"
         {%- endif -%}
         {%- endfor %}
-    ) { return "{{ proxy.route }}"; }
+    ) {
+        /* {{ proxy.description }} */
+        return "{{ proxy.route }}";
+    }
     {%- endfor %}
     return "{{ default }}";
 }

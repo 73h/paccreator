@@ -27,6 +27,8 @@ class PyPacer:
         return template.render(
             default=self._get_default_proxy_route(),
             proxies=proxies,
+            description=self.config.description,
+            version=self.config.version
         )
 
     def output(self) -> str:

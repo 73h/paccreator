@@ -1,15 +1,10 @@
 FROM python:3.11
 
-RUN useradd --create-home --home /code pyapp
-USER pyapp
-WORKDIR /code
+COPY pyproject.toml requirements.txt README.md LICENSE ./
+COPY ./src /src
 
-ENV VIRTUAL_ENV=/code/venv
-RUN python -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+RUN pip install --no-cache-dir --editable .[test]
 
-COPY --chown=app pyproject.toml requirements.txt ./
-RUN mkdir src
-RUN pip install --editable .[test]
+WORKDIR /src/
 
-COPY --chown=pyapp . .
+ENV PYTHONPATH=/src
