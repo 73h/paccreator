@@ -1,9 +1,15 @@
 FROM python:3.11
 
-COPY requirements.txt /tmp/requirements.txt
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN useradd --create-home --home /code pyapp
+USER pyapp
+WORKDIR /code
 
-COPY ./src /src
-WORKDIR /src/
+ENV VIRTUAL_ENV=/code/venv
+RUN python -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-ENV PYTHONPATH=/src
+COPY --chown=app pyproject.toml requirements.txt ./
+RUN mkdir src
+RUN pip install --editable .[test]
+
+COPY --chown=pyapp . .
