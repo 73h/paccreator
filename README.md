@@ -11,13 +11,33 @@ subtleties. If you have unusual requirements, it is better to write the proxy sc
 
 ToDo: Build package and publish on pypi
 
+Create a file called myproxy.yaml and define your proxy rules in it like this:
+```yaml
+description: "(optional) A description of the proxy script"
+version: "(optional) The version of the proxy script"
+default: direct # The default proxy to use
+proxies:
+  direct:
+    route: "DIRECT"
+    description: "(optional) A description of the proxy"
+    targets:
+      - "example.com"
+      - "foo.example.com"
+      - ".example.net"
+      # You can also use a network mask, ip-addresses, hosts or strings
+  proxy1:
+    route: "PROXY proxy1.example.com:80; DIRECT"
+    targets:
+      - "10.0.0.0/8"
+```
+
 Run this in python:
 ```python
 import os
 from pypacer import PyPacer
 
 p = PyPacer()
-with open(os.path.join("example.yaml"), "r") as f:
+with open(os.path.join("myproxy.yaml"), "r") as f:
     p.load_from_yaml(f.read())
     print(p.output())
 ```
