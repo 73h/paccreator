@@ -20,6 +20,7 @@ function FindProxyForURL(url, host) {
     ) { return "PROXY string.example.com"; }
     if (
            dnsResolve(host) === "192.0.0.170"
+        || dnsResolve(host) === "192.0.0.171"
         || dnsResolve(host) === "127.0.0.1"
     ) { return "PROXY ip.example.com"; }
     if (

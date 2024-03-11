@@ -25,6 +25,7 @@ proxies:
     route: "PROXY ip.example.com"
     targets:
       - "192.0.0.170"
+      - "192.0.0.171"
       - "127.0.0.1"
   PROXY_STRING:
     description: a proxy for string matches
