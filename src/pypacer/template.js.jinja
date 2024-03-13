@@ -22,5 +22,6 @@ function FindProxyForURL(url, host) {
         return "{{ proxy.route }}";
     }
     {%- endfor %}
-    return "{{ default }}";
+    /* Default: {{ default.description }} */
+    return "{{ default.route }}";
 }

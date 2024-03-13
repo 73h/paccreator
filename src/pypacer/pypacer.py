@@ -25,6 +25,7 @@ class PyPacer:
         if self.config is None:
             raise Exception("No config loaded, use load_from_yaml or load_from_dict first.")
         config = copy.deepcopy(self.config)
+        default = config.get_default_proxy()
         config.reorganize_proxies()
         config.recognize_overlaps()
         environment = Environment(loader=FileSystemLoader(pathlib.Path(__file__).parent.resolve()))
@@ -32,7 +33,7 @@ class PyPacer:
         proxies = [p for p in config.proxies.values() if len(p.targets) > 0]
         proxies.sort(key=sort_by_rating)
         return template.render(
-            default=config.get_default_proxy_route(),
+            default=default,
             proxies=proxies,
             description=config.description,
             version=config.version

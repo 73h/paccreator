@@ -56,5 +56,6 @@ function FindProxyForURL(url, host) {
         /* a proxy for netmask */
         return "PROXY netmask.example.com";
     }
+    /* Default: take the default proxy route */
     return "PROXY default.example.com";
 }

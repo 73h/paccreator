@@ -18,10 +18,10 @@ class TestPyPacer(unittest.TestCase):
     def test_load_config_from_yaml(self):
         p = PyPacer()
         p.load_from_yaml(self.pac_file)
+        self.assertIsInstance(p.config, PyPacerConfig)
+        self.assertTrue(p.config.proxies['proxy_default'].default)
         output = p.output()
         open(os.path.join(location, "..", "examples", "unittests.pac"), "w").write(output)
-        self.assertIsInstance(p.config, PyPacerConfig)
-        self.assertEqual(p.config.default, "PROXY_DEFAULT")
 
     def test_output(self):
         p = PyPacer()

@@ -1,40 +1,39 @@
 description: For the unittests, hopefully no real script should look like this. ;)
 version: 1.0
-default: PROXY_DEFAULT
 proxies:
-  DIRECT:
+  direkt:
     description: take the direct route
     route: "DIRECT"
     targets:
       - ".example.com"
-  PROXY_DOMAIN_OVERLAPS:
+  proxy_domain_overlaps:
     description: here domains overlap with the default route
     route: "PROXY domain-overlaps.example.com"
     targets:
       - "example.com"
       - "foo.example.com"
       - "foo.example.net"
-  PROXY_NETMASK:
+  proxy_netmask:
     description: a proxy for netmask
     route: "PROXY netmask.example.com"
     targets:
       - "93.184.0.0/16"
       - "2001:0db8:85a3:08d3::/64"
-  PROXY_IP:
+  proxy_ip:
     description: a proxy for IPs
     route: "PROXY ip.example.com"
     targets:
       - "192.0.0.170"
       - "192.0.0.171"
       - "127.0.0.1"
-  PROXY_STRING:
+  proxy_string:
     description: a proxy for string matches
     route: "PROXY string.example.com"
     targets:
       - "10."
       - ".102.123"
       - "10"
-  PROXY_MIXED:
+  proxy_mixed:
     description: a proxy for mixed matches, this should be split up
     route: "PROXY mixed.example.com"
     targets:
@@ -43,7 +42,8 @@ proxies:
       - "bar.example.net"
       - "20.10.10.0/24"
       - "130.131.132.133"
-  PROXY_DEFAULT:
+  proxy_default:
     description: take the default proxy route
+    default: true
     route: "PROXY default.example.com"
     targets: []

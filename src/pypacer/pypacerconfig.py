@@ -26,8 +26,10 @@ class Target:
 
 @dataclass
 class Proxy:
-    route: str
-    description: str = ""
+    route: str = "DIRECT"
+    default: bool = False
+    plain_hostname: bool = False
+    description: str = "use this proxy"
     targets: list = field(default_factory=lambda: [])
 
     def __post_init__(self):
@@ -37,17 +39,14 @@ class Proxy:
 @dataclass
 class PyPacerConfig:
     proxies: dict
-    default: str
-    version: str = "1.0"
-    description: str = "PAC File for my great company"
+    version: str = "0.1"
+    description: str = "pac file for my company"
     routings: list = field(default_factory=lambda: [])
 
     def __post_init__(self):
         self.proxies = {k: Proxy(**v) for k, v in self.proxies.items()}
 
     def validate(self):
-        if self.default not in [p for p in self.proxies.keys()]:
-            raise ValueError("default is not in proxies")
         for name, proxy in self.proxies.items():
             if not proxy.route:
                 raise ValueError(f"proxy {name} has no route")
@@ -74,5 +73,6 @@ class PyPacerConfig:
             for target in proxy.targets:
                 target.recognize_overlaps(all_targets)
 
-    def get_default_proxy_route(self) -> str:
-        return self.proxies[self.default].route
+    def get_default_proxy(self) -> Proxy:
+        defaults = [p for p in self.proxies.values() if p.default]
+        return defaults[0] if len(defaults) > 0 else [p for p in self.proxies.values()][0]

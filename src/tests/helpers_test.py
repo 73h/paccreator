@@ -52,8 +52,8 @@ class TestHelpers(unittest.TestCase):
         self.assertTrue(is_hostname("exämple.com."))
 
     def test_sort_by_rating(self):
-        config = {"proxies": {"A": {"route": "A", "targets": [".example.com"]},
-                              "B": {"route": "B", "targets": ["foo.example.com"]}}, "default": "A"}
+        config = {"proxies": {"A": {"route": "A", "default": True, "targets": [".example.com"]},
+                              "B": {"route": "B", "targets": ["foo.example.com"]}}}
         config = PyPacerConfig(**config)
         config.recognize_overlaps()
         proxies = [p for p in config.proxies.values()]
