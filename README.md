@@ -24,6 +24,7 @@ proxies:
   direct:
     route: DIRECT # (optional, default=DIRECT)
     default: true # (optional, default=false), this marks the proxy as default if no other condition applies. if no default proxy is available, the first one is used.
+    catch_plain_hostnames: true # (optional, default=false), if true, this proxy applies if there is no domain name in the hostname (no dots)
     description: A description of proxy # (optional, default=use this proxy)
     targets:
       - example.com

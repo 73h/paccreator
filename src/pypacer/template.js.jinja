@@ -14,6 +14,7 @@ function FindProxyForURL(url, host) {
         {%- elif target.type == "IP" -%}dnsResolve(host) === "{{ target.target }}"
         {%- elif target.type == "STRING_L" -%}host.substring(0, {{ target.target|length }}) === "{{ target.target }}"
         {%- elif target.type == "STRING_R" -%}host.substring(host.length - {{ target.target|length }}) === "{{ target.target }}"
+        {%- elif target.type == "PLAIN_HOSTNAME" -%}isPlainHostName(host)
         {%- else -%}host === "{{ target.target }}"
         {%- endif -%}
         {%- endfor %}

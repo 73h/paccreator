@@ -27,12 +27,24 @@ function FindProxyForURL(url, host) {
         return "DIRECT";
     }
     if (
+           isPlainHostName(host)
+    ) {
+        /* a proxy for plain hostnames */
+        return "PROXY plain-hostname.example.com";
+    }
+    if (
            host.substring(0, 3) === "10."
         || host.substring(host.length - 8) === ".102.123"
         || host === "10"
     ) {
         /* a proxy for string matches */
         return "PROXY string.example.com";
+    }
+    if (
+           isInNet(host, "93.184.0.0", "255.255.0.0")
+    ) {
+        /* a proxy for netmask */
+        return "PROXY netmask.example.com";
     }
     if (
            dnsResolve(host) === "192.0.0.170"
@@ -48,13 +60,6 @@ function FindProxyForURL(url, host) {
     ) {
         /* a proxy for mixed matches, this should be split up */
         return "PROXY mixed.example.com";
-    }
-    if (
-           isInNet(host, "93.184.0.0", "255.255.0.0")
-        || isInNet(host, "2001:db8:85a3:8d3::", "ffff:ffff:ffff:ffff::")
-    ) {
-        /* a proxy for netmask */
-        return "PROXY netmask.example.com";
     }
     /* Default: take the default proxy route */
     return "PROXY default.example.com";

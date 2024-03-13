@@ -6,6 +6,10 @@ proxies:
     route: "DIRECT"
     targets:
       - ".example.com"
+  proxy_for_plain_hostnames:
+    description: a proxy for plain hostnames
+    catch_plain_hostnames: true
+    route: "PROXY plain-hostname.example.com"
   proxy_domain_overlaps:
     description: here domains overlap with the default route
     route: "PROXY domain-overlaps.example.com"
@@ -18,7 +22,6 @@ proxies:
     route: "PROXY netmask.example.com"
     targets:
       - "93.184.0.0/16"
-      - "2001:0db8:85a3:08d3::/64"
   proxy_ip:
     description: a proxy for IPs
     route: "PROXY ip.example.com"
@@ -46,4 +49,3 @@ proxies:
     description: take the default proxy route
     default: true
     route: "PROXY default.example.com"
-    targets: []

@@ -35,5 +35,5 @@ class TestPyPacer(unittest.TestCase):
         self.assertEqual(pac_file.find_proxy_for_url("", "10.11.12.13"), "PROXY string.example.com")
         self.assertEqual(pac_file.find_proxy_for_url("", "192.168.102.123"), "PROXY string.example.com")
         self.assertEqual(pac_file.find_proxy_for_url("", "127.0.0.1"), "PROXY ip.example.com")
-        # ToDo: isInNet() function apparently does not support IPv6 at the moment :(
-        self.assertEqual(pac_file.find_proxy_for_url("", "2001:db8:85a3:8d3::"), "PROXY default.example.com")
+        self.assertEqual(pac_file.find_proxy_for_url("", "intranet"), "PROXY plain-hostname.example.com")
+        self.assertEqual(pac_file.find_proxy_for_url("", "x.y.z"), "PROXY default.example.com")

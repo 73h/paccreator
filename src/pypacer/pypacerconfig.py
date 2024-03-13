@@ -28,12 +28,16 @@ class Target:
 class Proxy:
     route: str = "DIRECT"
     default: bool = False
-    plain_hostname: bool = False
+    catch_plain_hostnames: bool = False
     description: str = "use this proxy"
     targets: list = field(default_factory=lambda: [])
 
     def __post_init__(self):
         self.targets = [Target(t) for t in self.targets]
+        if self.catch_plain_hostnames:
+            target = Target("")
+            target.type = "PLAIN_HOSTNAME"
+            self.targets.append(target)
 
 
 @dataclass
