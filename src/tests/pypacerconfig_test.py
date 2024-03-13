@@ -23,3 +23,7 @@ class TestPyPacerConfig(unittest.TestCase):
         config = {"proxies": {"foo": {"route": "foo"}, "bar": {"route": "bar"}}, "default": "bar"}
         config = PyPacerConfig(**config)
         self.assertEqual(config.get_default_proxy_route(), "bar")
+
+    def test_target_is_string(self):
+        config = {"proxies": {"foo": {"route": "foo", "targets": [10., "foo"]}}, "default": "foo"}
+        PyPacerConfig(**config)

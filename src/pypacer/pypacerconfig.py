@@ -6,9 +6,9 @@ from pypacer.helpers import get_target_type
 
 class Target:
     def __init__(self, target: str):
-        self.target = target
+        self.target = str(target)
         self.rating = 0
-        self.type = get_target_type(target)
+        self.type = get_target_type(self.target)
         self.netmask = None
         if self.type == "NETWORK":
             self.netmask = ipaddress.ip_network(self.target).with_netmask.split("/")
