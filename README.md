@@ -11,6 +11,11 @@ subtleties. If you have unusual requirements, it is better to write the proxy sc
 
 ToDo: Build package and publish on pypi
 
+you can also load the script directly with pip:
+```
+pip install git+https://github.com/73h/pypacer.git@main#egg=pypacer
+```
+
 Create a file called myproxy.yaml and define your proxy rules in it like this:
 ```yaml
 description: "(optional) A description of the proxy script"
