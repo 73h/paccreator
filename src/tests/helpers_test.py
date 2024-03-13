@@ -55,7 +55,7 @@ class TestHelpers(unittest.TestCase):
         config = {"proxies": {"A": {"route": "A", "targets": [".example.com"]},
                               "B": {"route": "B", "targets": ["foo.example.com"]}}, "default": "A"}
         config = PyPacerConfig(**config)
-        config.validate()
+        config.recognize_overlaps()
         proxies = [p for p in config.proxies.values()]
         self.assertEqual(proxies[0].route, "A")
         self.assertEqual(proxies[1].targets[0].rating, -1)

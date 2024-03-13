@@ -52,10 +52,8 @@ class PyPacerConfig:
             if not proxy.route:
                 raise ValueError(f"proxy {name} has no route")
             # ToDo: Check proxy addresses
-        self._reorganize_proxies()
-        self._recognize_overlaps()
 
-    def _reorganize_proxies(self):
+    def reorganize_proxies(self):
         # dns queries should be at the end. to get this done, proxies with mixed destinations need to be split
         proxies = {}
         i = 0
@@ -70,8 +68,11 @@ class PyPacerConfig:
                 proxy.targets = [t for t in targets if t.type not in nw]
         self.proxies.update(proxies)
 
-    def _recognize_overlaps(self):
+    def recognize_overlaps(self):
         for name, proxy in self.proxies.items():
             all_targets = [x for xs in [p.targets for n, p in self.proxies.items() if n != name] for x in xs]
             for target in proxy.targets:
                 target.recognize_overlaps(all_targets)
+
+    def get_default_proxy_route(self) -> str:
+        return self.proxies[self.default].route

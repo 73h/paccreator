@@ -18,3 +18,8 @@ class TestPyPacerConfig(unittest.TestCase):
         with self.assertRaises(ValueError) as err:
             config.validate()
         self.assertEqual(str(err.exception), "proxy DIRECT has no route")
+
+    def test_get_default_proxy_route(self):
+        config = {"proxies": {"foo": {"route": "foo"}, "bar": {"route": "bar"}}, "default": "bar"}
+        config = PyPacerConfig(**config)
+        self.assertEqual(config.get_default_proxy_route(), "bar")

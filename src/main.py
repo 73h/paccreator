@@ -16,6 +16,7 @@ if __name__ == "__main__":
           - "www.my-company.com"
           - "contact.my-company.com"
       SPECIAL_PROXY:
+        description: "Special proxy"
         route: "PROXY proxy.my-company.com:8080"
         targets:
           - "datacenter.my-company.com"

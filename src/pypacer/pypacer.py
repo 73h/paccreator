@@ -1,3 +1,4 @@
+import copy
 import pathlib
 from typing import Optional
 
@@ -12,26 +13,27 @@ class PyPacer:
     def __init__(self):
         self.config: Optional[PyPacerConfig] = None
 
-    def load_from_yaml(self, stream: str):
-        y = yaml.safe_load(stream)
-        self.config = PyPacerConfig(**y)
+    def load_from_dict(self, d: dict):
+        self.config = PyPacerConfig(**d)
         self.config.validate()
 
-    def _get_default_proxy_route(self) -> str:
-        return self.config.proxies[self.config.default].route
-
-    def _get_javascript(self) -> str:
-        environment = Environment(loader=FileSystemLoader(pathlib.Path(__file__).parent.resolve()))
-        template = environment.get_template("template.js.jinja")
-        proxies = [p for p in self.config.proxies.values() if len(p.targets) > 0]
-        proxies.sort(key=sort_by_rating)
-        return template.render(
-            default=self._get_default_proxy_route(),
-            proxies=proxies,
-            description=self.config.description,
-            version=self.config.version
-        )
+    def load_from_yaml(self, stream: str):
+        y = yaml.safe_load(stream)
+        self.load_from_dict(y)
 
     def output(self) -> str:
-        output = self._get_javascript()
-        return output
+        if self.config is None:
+            raise Exception("No config loaded, use load_from_yaml or load_from_dict first.")
+        config = copy.deepcopy(self.config)
+        config.reorganize_proxies()
+        config.recognize_overlaps()
+        environment = Environment(loader=FileSystemLoader(pathlib.Path(__file__).parent.resolve()))
+        template = environment.get_template("template.js.jinja")
+        proxies = [p for p in config.proxies.values() if len(p.targets) > 0]
+        proxies.sort(key=sort_by_rating)
+        return template.render(
+            default=config.get_default_proxy_route(),
+            proxies=proxies,
+            description=config.description,
+            version=config.version
+        )

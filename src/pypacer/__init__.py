@@ -1,5 +1,5 @@
-from .pypacer import PyPacer
+from .pypacer import PyPacer, PyPacerConfig
 
 __all__ = [
-    "PyPacer",
+    "PyPacer"
 ]
