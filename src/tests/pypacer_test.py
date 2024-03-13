@@ -1,11 +1,13 @@
 import os
+import pathlib
 import unittest
 
 from pypac.parser import PACFile
 
 from pypacer import PyPacer
-from pypacer.helpers import location
 from pypacer.pypacerconfig import PyPacerConfig
+
+location = pathlib.Path(__file__).parent.resolve()
 
 
 class TestPyPacer(unittest.TestCase):

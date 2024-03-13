@@ -1,8 +1,5 @@
 import ipaddress
-import os
 import re
-
-location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 
 def is_ipaddress(ip) -> bool:
