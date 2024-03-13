@@ -11,7 +11,7 @@ subtleties. If you have unusual requirements, it is better to write the proxy sc
 
 ToDo: Build package and publish on pypi
 
-you can also load the script directly with pip:
+You can also load the script directly with pip:
 ```
 pip install git+https://github.com/73h/pypacer.git@main#egg=pypacer
 ```
