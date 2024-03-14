@@ -75,4 +75,8 @@ class PyPacerConfig:
 
     def get_default_proxy(self) -> Proxy:
         defaults = [p for p in self.proxies if "default" in p.tags]
-        return defaults[0] if len(defaults) > 0 else [p for p in self.proxies][0]
+        if len(defaults) == 0:
+            if len(self.proxies) == 0:
+                return Proxy(route="DIRECT")
+            return self.proxies[0]
+        return defaults[0]

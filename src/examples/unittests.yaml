@@ -17,6 +17,8 @@ proxies:
       - "foo.example.net"
   - route: "PROXY netmask.example.com"
     description: a proxy for netmask
+    tags:
+      - foo
     targets:
       - "93.184.0.0/16"
   - route: "PROXY ip.example.com"

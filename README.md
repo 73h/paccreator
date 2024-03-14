@@ -10,9 +10,9 @@ subtleties. If you have unusual requirements, it is better to write the proxy sc
 ## I would still like to implement this
 
 - [x] ~~automatic sorting with overlapping hostnames~~
+- [x] ~~implement include and exclude filter at output~~
 - [ ] automatic sorting with overlapping network masks
 - [ ] publish on pypi
-- [ ] implement filter at output
 - [ ] add tag to automatically add local networks to the proxy
 
 

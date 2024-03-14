@@ -23,6 +23,32 @@ class TestPyPacer(unittest.TestCase):
         output = p.output()
         open(os.path.join(location, "..", "examples", "unittests.pac"), "w").write(output)
 
+    def test_exclude_by_tag(self):
+        p = PyPacer()
+        p.load_from_yaml(self.pac_file)
+        output = p.output(excludes=["foo"])
+        self.assertTrue("PROXY netmask.example.com" not in output)
+
+    def test_exclude_by_tags(self):
+        p = PyPacer()
+        p.load_from_yaml(self.pac_file)
+        output = p.output(excludes=["foo", "default"])
+        self.assertTrue("PROXY netmask.example.com" not in output)
+        self.assertTrue("PROXY default.example.com" not in output)
+
+    def test_include_by_tag(self):
+        p = PyPacer()
+        p.load_from_yaml(self.pac_file)
+        output = p.output(includes=["foo"])
+        self.assertTrue("PROXY netmask.example.com" in output)
+
+    def test_include_by_tags(self):
+        p = PyPacer()
+        p.load_from_yaml(self.pac_file)
+        output = p.output(includes=["foo", "default"])
+        self.assertTrue("PROXY netmask.example.com" in output)
+        self.assertTrue("PROXY default.example.com" in output)
+
     def test_output(self):
         p = PyPacer()
         p.load_from_yaml(self.pac_file)
