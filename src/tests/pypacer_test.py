@@ -19,7 +19,7 @@ class TestPyPacer(unittest.TestCase):
         p = PyPacer()
         p.load_from_yaml(self.pac_file)
         self.assertIsInstance(p.config, PyPacerConfig)
-        self.assertTrue(p.config.proxies['proxy_default'].default)
+        self.assertEqual(p.config.proxies[0].route, "DIRECT")
         output = p.output()
         open(os.path.join(location, "..", "examples", "unittests.pac"), "w").write(output)
 

@@ -7,9 +7,16 @@
 This package aims to make it possible to create simple proxy scripts declaratively. It will never cover all the
 subtleties. If you have unusual requirements, it is better to write the proxy script directly in JavaScript
 
-## Usage
+## I would still like to implement this
 
-ToDo: Build package and publish on pypi
+- [x] ~~automatic sorting with overlapping hostnames~~
+- [ ] automatic sorting with overlapping network masks
+- [ ] publish on pypi
+- [ ] implement filter at output
+- [ ] add tag to automatically add local networks to the proxy
+
+
+## Usage
 
 You can also load the script directly with pip:
 ```
@@ -21,18 +28,17 @@ Create a file called myproxy.yaml and define your proxy rules in it like this:
 description: A description of proxy script # (optional, default=pac file for my company)
 version: The version of proxy script # (optional, default=0.1)
 proxies:
-  direct:
-    route: DIRECT # (optional, default=DIRECT)
-    default: true # (optional, default=false), this marks the proxy as default if no other condition applies. if no default proxy is available, the first one is used.
-    catch_plain_hostnames: true # (optional, default=false), if true, this proxy applies if there is no domain name in the hostname (no dots)
+  - route: DIRECT
     description: A description of proxy # (optional, default=use this proxy)
+    tags: # (optional) Here you can add any comments you like, which you can use to filter later. However, there are also standard annotations.
+      - default # (optional) This marks the proxy as default if no other condition applies. if no default proxy is available, the first one is used.
+      - catch-plain-hostnames # (optional) This proxy applies if there is no domain name in the hostname (no dots). You should not annotate this on several proxies.
     targets:
       - example.com
       - foo.example.com
       - .example.net
       # You can also use a network mask, ip-addresses, hosts or strings
-  proxy1:
-    route: PROXY proxy1.example.com:80; DIRECT
+  - route: PROXY proxy1.example.com:80; DIRECT
     targets:
       - 10.0.0.0/8
 ```
@@ -56,21 +62,19 @@ yaml:
 ```yaml
 description: Simple proxy
 proxies:
-  direct:
-    description: use direct connection
+  - description: use direct connection
     route: DIRECT
     targets:
       - 10.0.0.0/8
       - .my-company.com
-  myproxy:
-    description: use my proxy
+  - description: use my proxy
     route: PROXY proxy.my-company.com:80
-    default: true
+    tags:
+      - default
     targets:
       - www.my-company.com
       - contact.my-company.com
-  special_proxy:
-    description: use the special proxy
+  - description: use the special proxy
     route: PROXY proxy.my-company.com:8080
     targets:
       - datacenter.my-company.com

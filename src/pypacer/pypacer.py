@@ -30,7 +30,7 @@ class PyPacer:
         config.recognize_overlaps()
         environment = Environment(loader=FileSystemLoader(pathlib.Path(__file__).parent.resolve()))
         template = environment.get_template("template.js.jinja")
-        proxies = [p for p in config.proxies.values() if len(p.targets) > 0]
+        proxies = [p for p in config.proxies if len(p.targets) > 0]
         proxies.sort(key=sort_by_rating)
         return template.render(
             default=default,

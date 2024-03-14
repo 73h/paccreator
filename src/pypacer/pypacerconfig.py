@@ -26,15 +26,14 @@ class Target:
 
 @dataclass
 class Proxy:
-    route: str = "DIRECT"
-    default: bool = False
-    catch_plain_hostnames: bool = False
+    route: str
     description: str = "use this proxy"
     targets: list = field(default_factory=lambda: [])
+    tags: list[str] = field(default_factory=lambda: [])
 
     def __post_init__(self):
         self.targets = [Target(t) for t in self.targets]
-        if self.catch_plain_hostnames:
+        if "catch-plain-hostnames" in self.tags:
             target = Target("")
             target.type = "PLAIN_HOSTNAME"
             self.targets.append(target)
@@ -42,41 +41,38 @@ class Proxy:
 
 @dataclass
 class PyPacerConfig:
-    proxies: dict
+    proxies: list
     version: str = "0.1"
     description: str = "pac file for my company"
-    routings: list = field(default_factory=lambda: [])
 
     def __post_init__(self):
-        self.proxies = {k: Proxy(**v) for k, v in self.proxies.items()}
+        self.proxies = [Proxy(**p) for p in self.proxies]
 
     def validate(self):
-        for name, proxy in self.proxies.items():
+        for proxy in self.proxies:
             if not proxy.route:
-                raise ValueError(f"proxy {name} has no route")
+                raise ValueError(f"one proxy has no route")
             # ToDo: Check proxy addresses
 
     def reorganize_proxies(self):
         # dns queries should be at the end. to get this done, proxies with mixed destinations need to be split
-        proxies = {}
         i = 0
-        for name, proxy in self.proxies.items():
+        for index, proxy in enumerate(self.proxies):
             i += 1
             targets = [t for t in proxy.targets]
             nw = ["IP", "NETWORK"]
             if any([t.type in nw for t in targets]) and any([t.type not in nw for t in targets]):
                 new_proxy = Proxy(route=proxy.route, description=proxy.description)
                 new_proxy.targets = [t for t in targets if t.type in nw]
-                proxies[f"{name}_{str(i)}"] = new_proxy
+                self.proxies.append(new_proxy)
                 proxy.targets = [t for t in targets if t.type not in nw]
-        self.proxies.update(proxies)
 
     def recognize_overlaps(self):
-        for name, proxy in self.proxies.items():
-            all_targets = [x for xs in [p.targets for n, p in self.proxies.items() if n != name] for x in xs]
+        for index, proxy in enumerate(self.proxies):
+            all_targets = [x for xs in [p.targets for i, p in enumerate(self.proxies) if i != index] for x in xs]
             for target in proxy.targets:
                 target.recognize_overlaps(all_targets)
 
     def get_default_proxy(self) -> Proxy:
-        defaults = [p for p in self.proxies.values() if p.default]
-        return defaults[0] if len(defaults) > 0 else [p for p in self.proxies.values()][0]
+        defaults = [p for p in self.proxies if "default" in p.tags]
+        return defaults[0] if len(defaults) > 0 else [p for p in self.proxies][0]

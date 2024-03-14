@@ -52,12 +52,11 @@ class TestHelpers(unittest.TestCase):
         self.assertTrue(is_hostname("exämple.com."))
 
     def test_sort_by_rating(self):
-        config = {"proxies": {"A": {"route": "A", "default": True, "targets": [".example.com"]},
-                              "B": {"route": "B", "targets": ["foo.example.com"]}}}
+        config = {"proxies": [{"route": "A", "tags": ["default"], "targets": [".example.com"]},
+                              {"route": "B", "targets": ["foo.example.com"]}]}
         config = PyPacerConfig(**config)
         config.recognize_overlaps()
-        proxies = [p for p in config.proxies.values()]
-        self.assertEqual(proxies[0].route, "A")
-        self.assertEqual(proxies[1].targets[0].rating, -1)
-        proxies.sort(key=sort_by_rating)
-        self.assertEqual(proxies[0].route, "B")
+        self.assertEqual(config.proxies[0].route, "A")
+        self.assertEqual(config.proxies[1].targets[0].rating, -1)
+        config.proxies.sort(key=sort_by_rating)
+        self.assertEqual(config.proxies[0].route, "B")
