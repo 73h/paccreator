@@ -1,5 +1,6 @@
 import copy
 import pathlib
+from contextlib import contextmanager
 from typing import Optional
 
 import yaml
@@ -13,12 +14,12 @@ class PyPacer:
     def __init__(self):
         self.config: Optional[PyPacerConfig] = None
 
-    def load_from_dict(self, d: dict):
-        self.config = PyPacerConfig(**d)
+    def load_from_dict(self, config: dict):
+        self.config = PyPacerConfig(**config)
         self.config.validate()
 
-    def load_from_yaml(self, stream: str):
-        y = yaml.safe_load(stream)
+    def load_from_yaml(self, config: str):
+        y = yaml.safe_load(config)
         self.load_from_dict(y)
 
     def output(self, excludes: list[str] = None, includes: list[str] = None) -> str:
@@ -74,3 +75,17 @@ class PyPacer:
             description=config.description,
             version=config.version
         )
+
+
+@contextmanager
+def load_from_yaml(config: str) -> PyPacer():
+    p = PyPacer()
+    p.load_from_yaml(config)
+    yield p
+
+
+@contextmanager
+def load_from_dict(config: dict) -> PyPacer():
+    p = PyPacer()
+    p.load_from_dict(config)
+    yield p

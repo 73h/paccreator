@@ -1,5 +1,8 @@
-from .pypacer import PyPacer, PyPacerConfig
+from pypacer.pypacer import load_from_yaml, load_from_dict
+from .pypacer import PyPacer
 
 __all__ = [
-    "PyPacer"
+    "PyPacer",
+    "load_from_yaml",
+    "load_from_dict",
 ]
