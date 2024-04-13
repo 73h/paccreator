@@ -16,7 +16,7 @@ function FindProxyForURL(url, host) {
         {%- elif target.type.name == "STRING_R" -%}host.substring(host.length - {{ target.target|length }}) === "{{ target.target }}"
         {%- elif target.type.name == "PLAIN_HOSTNAME" -%}isPlainHostName(host)
         {%- else -%}host === "{{ target.target }}"
-        {%- endif -%} // rating: {{ target.rating }}
+        {%- endif -%}
         {%- endfor %}
     ) {
         /* {{ proxy.description }} */
