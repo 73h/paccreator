@@ -1,27 +1,28 @@
 import ipaddress
 from dataclasses import dataclass, field
 
-from pypacer.helpers import get_target_type
+from pypacer.helpers import get_target_type, TargetType
 
 
 class Target:
     def __init__(self, target: str):
         self.target = str(target)
-        self.rating = 0
         self.type = get_target_type(self.target)
+        self.rating = self.type.value
         self.netmask = None
-        if self.type == "NETWORK":
+        if self.type == TargetType.NETWORK:
             self.netmask = ipaddress.ip_network(self.target).with_netmask.split("/")
 
     def recognize_overlaps(self, targets: list):
-        if self.type == "HOSTS":
+        if self.type == TargetType.HOSTS:
             for target in targets:
-                if target.type == "HOST" and target.target.endswith(self.target):
-                    target.rating = target.rating - 1
-        if self.type == "IP":
-            self.rating = 1
-        if self.type == "NETWORK":
-            self.rating = 2
+                if target.type == TargetType.HOST and target.target.endswith(self.target):
+                    target.rating = target.type.value - 1
+        if self.type == TargetType.NETWORK:
+            for target in targets:
+                if target.type == TargetType.IP:
+                    if ipaddress.ip_address(target.target) in ipaddress.ip_network(self.target):
+                        target.rating = target.type.value - 1
 
 
 @dataclass
@@ -35,7 +36,8 @@ class Proxy:
         self.targets = [Target(t) for t in self.targets]
         if "catch-plain-hostnames" in self.tags:
             target = Target("")
-            target.type = "PLAIN_HOSTNAME"
+            target.type = TargetType.PLAIN_HOSTNAME
+            target.rating = target.type.value
             self.targets.append(target)
 
 
@@ -56,16 +58,22 @@ class PyPacerConfig:
 
     def reorganize_proxies(self):
         # dns queries should be at the end. to get this done, proxies with mixed destinations need to be split
-        i = 0
         for index, proxy in enumerate(self.proxies):
-            i += 1
             targets = [t for t in proxy.targets]
-            nw = ["IP", "NETWORK"]
+            nw = [TargetType.IP, TargetType.NETWORK]
             if any([t.type in nw for t in targets]) and any([t.type not in nw for t in targets]):
                 new_proxy = Proxy(route=proxy.route, description=proxy.description)
                 new_proxy.targets = [t for t in targets if t.type in nw]
                 self.proxies.append(new_proxy)
                 proxy.targets = [t for t in targets if t.type not in nw]
+            targets = [t for t in proxy.targets]
+            if any([t.type == TargetType.NETWORK for t in targets]) and any([t.type == TargetType.IP for t in targets]):
+                new_proxy = Proxy(route=proxy.route, description=proxy.description)
+                new_proxy.targets = [t for t in targets if t.type == TargetType.NETWORK]
+                self.proxies.append(new_proxy)
+                proxy.targets = [t for t in targets if t.type == TargetType.IP]
+        for proxy in self.proxies:
+            proxy.targets.sort(key=lambda x: x.type.value)
 
     def recognize_overlaps(self):
         for index, proxy in enumerate(self.proxies):

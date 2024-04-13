@@ -1,5 +1,6 @@
 import ipaddress
 import re
+from enum import Enum
 
 
 def is_ipaddress(ip) -> bool:
@@ -30,25 +31,33 @@ def is_hostname(hostname):
     return False
 
 
-def get_target_type(target: str) -> str:
+class TargetType(Enum):
+    PLAIN_HOSTNAME = 0
+    HOST = 2
+    HOSTS = 4
+    STRING = 6
+    STRING_L = 8
+    STRING_R = 10
+    IP = 12
+    NETWORK = 14
+
+
+def get_target_type(target: str) -> TargetType:
     if is_ipaddress(target):
-        return "IP"
+        return TargetType.IP
     elif is_network(target):
-        return "NETWORK"
+        return TargetType.NETWORK
     elif is_hostname(target):
         if target.startswith("."):
-            return "HOSTS"
-        return "HOST"
+            return TargetType.HOSTS
+        return TargetType.HOST
     else:
         if target.startswith("."):
-            return "STRING_R"
+            return TargetType.STRING_R
         if target.endswith("."):
-            return "STRING_L"
-        return "STRING"
+            return TargetType.STRING_L
+        return TargetType.STRING
 
 
 def sort_by_rating(proxy):
-    rating = 0
-    for target in proxy.targets:
-        rating += target.rating
-    return rating
+    return min([t.rating for t in proxy.targets])

@@ -1,7 +1,7 @@
 import unittest
 
 from pypacer.helpers import get_target_type, sort_by_rating, is_ipaddress, is_network, \
-    is_hostname
+    is_hostname, TargetType
 from pypacer.pypacerconfig import PyPacerConfig
 
 
@@ -20,26 +20,26 @@ class TestHelpers(unittest.TestCase):
         self.assertTrue(is_network("2001:0db8:85a3:08d3::/64"))
 
     def test_target_type_ip_mask(self):
-        self.assertEqual(get_target_type("127.0.0.0/24"), "NETWORK")
+        self.assertEqual(get_target_type("127.0.0.0/24"), TargetType.NETWORK)
 
     def test_target_type_ip(self):
-        self.assertEqual(get_target_type("127.0.0.1"), "IP")
+        self.assertEqual(get_target_type("127.0.0.1"), TargetType.IP)
 
     def test_target_type_hosts(self):
-        self.assertEqual(get_target_type(".example.com"), "HOSTS")
+        self.assertEqual(get_target_type(".example.com"), TargetType.HOSTS)
 
     def test_target_type_host(self):
-        self.assertEqual(get_target_type("example.com"), "HOST")
-        self.assertEqual(get_target_type("example.com."), "HOST")
+        self.assertEqual(get_target_type("example.com"), TargetType.HOST)
+        self.assertEqual(get_target_type("example.com."), TargetType.HOST)
 
     def test_target_type_string_l(self):
-        self.assertEqual(get_target_type("10."), "STRING_L")
+        self.assertEqual(get_target_type("10."), TargetType.STRING_L)
 
     def test_target_type_string_r(self):
-        self.assertEqual(get_target_type(".102.123"), "STRING_R")
+        self.assertEqual(get_target_type(".102.123"), TargetType.STRING_R)
 
     def test_target_type_string(self):
-        self.assertEqual(get_target_type("10"), "STRING")
+        self.assertEqual(get_target_type("10"), TargetType.STRING)
 
     def test_is_hostname(self):
         self.assertTrue(is_hostname("example.com"))
@@ -57,6 +57,7 @@ class TestHelpers(unittest.TestCase):
         config = PyPacerConfig(**config)
         config.recognize_overlaps()
         self.assertEqual(config.proxies[0].route, "A")
-        self.assertEqual(config.proxies[1].targets[0].rating, -1)
+        self.assertEqual(config.proxies[1].targets[0].rating, 1)
+        self.assertEqual(config.proxies[0].targets[0].rating, 4)
         config.proxies.sort(key=sort_by_rating)
         self.assertEqual(config.proxies[0].route, "B")

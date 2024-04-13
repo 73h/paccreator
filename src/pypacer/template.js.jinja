@@ -8,15 +8,15 @@ function FindProxyForURL(url, host) {
     if (
         {%- for target in proxy.targets %}
         {% if loop.index > 1 %}|| {% else %}   {% endif -%}
-        {%- if target.type == "HOST" -%}localHostOrDomainIs(host, "{{ target.target }}")
-        {%- elif target.type == "HOSTS" -%}dnsDomainIs(host, "{{ target.target }}")
-        {%- elif target.type == "NETWORK" -%}isInNet(host, "{{ target.netmask[0] }}", "{{ target.netmask[1] }}")
-        {%- elif target.type == "IP" -%}dnsResolve(host) === "{{ target.target }}"
-        {%- elif target.type == "STRING_L" -%}host.substring(0, {{ target.target|length }}) === "{{ target.target }}"
-        {%- elif target.type == "STRING_R" -%}host.substring(host.length - {{ target.target|length }}) === "{{ target.target }}"
-        {%- elif target.type == "PLAIN_HOSTNAME" -%}isPlainHostName(host)
+        {%- if target.type.name == "HOST" -%}localHostOrDomainIs(host, "{{ target.target }}")
+        {%- elif target.type.name == "HOSTS" -%}dnsDomainIs(host, "{{ target.target }}")
+        {%- elif target.type.name == "NETWORK" -%}isInNet(host, "{{ target.netmask[0] }}", "{{ target.netmask[1] }}")
+        {%- elif target.type.name == "IP" -%}dnsResolve(host) === "{{ target.target }}"
+        {%- elif target.type.name == "STRING_L" -%}host.substring(0, {{ target.target|length }}) === "{{ target.target }}"
+        {%- elif target.type.name == "STRING_R" -%}host.substring(host.length - {{ target.target|length }}) === "{{ target.target }}"
+        {%- elif target.type.name == "PLAIN_HOSTNAME" -%}isPlainHostName(host)
         {%- else -%}host === "{{ target.target }}"
-        {%- endif -%}
+        {%- endif -%} // rating: {{ target.rating }}
         {%- endfor %}
     ) {
         /* {{ proxy.description }} */
