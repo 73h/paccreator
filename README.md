@@ -7,23 +7,20 @@
 This package aims to make it possible to create simple proxy scripts declaratively. It will never cover all the
 subtleties. If you have unusual requirements, it is better to write the proxy script directly in JavaScript
 
-## I would still like to implement this
-
-- [x] ~~automatic sorting for overlapping host names~~
-- [x] ~~implementation of inclusion and exclusion filters for output~~
-- [x] ~~sort automatically if ip address in network mask~~
-- [ ] publish on pypi
-- [ ] Add annotation to automatically add local networks to the proxy
-
 
 ## Usage
 
-You can also load the script directly with pip:
+You can install the package with pip.
+```
+pip install pypacer
+```
+
+You can also load the script directly from github with pip.
 ```
 pip install git+https://github.com/73h/pypacer.git@main#egg=pypacer
 ```
 
-Create a file called myproxy.yaml and define your proxy rules in it like this:
+Create a file called myproxy.yaml and define your proxy rules in it like this.
 ```yaml
 description: A description of proxy script # (optional, default=pac file for my company)
 version: The version of proxy script # (optional, default=0.1)
@@ -43,7 +40,7 @@ proxies:
       - 10.0.0.0/8
 ```
 
-Run this in python:
+Run this in python.  
 ```python
 import os
 from pypacer import PyPacer
@@ -58,7 +55,7 @@ with open(os.path.join("myproxy.yaml"), "r") as f:
 
 ### A simple Example for a random company
 
-yaml:  
+yaml file  
 ```yaml
 description: Simple proxy
 proxies:

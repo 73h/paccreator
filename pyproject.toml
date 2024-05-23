@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pypacer"
-version = "0.1.7"
+version = "0.2.0"
 dynamic = ["dependencies"]
 authors = [
     { name = "Heiko Schmidt", email = "73h@gmx.net" },
@@ -12,16 +12,18 @@ authors = [
 maintainers = [
     { name = "Heiko Schmidt", email = "73h@gmx.net" },
 ]
-description = ""
+description = "This package makes it possible to create simple proxy auto-config (PAC) files declaratively."
 readme = "README.md"
 license = { file = "LICENSE" }
-keywords = ["proxy-auto-config", "pac", "wpad", "proxy", "findproxyforurl"]
+keywords = ["proxy auto-config", "auto-config", "pac", "wpad", "proxy", "findproxyforurl"]
 requires-python = ">=3.9"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
+[project.urls]
+Homepage = "https://github.com/73h/pypacer"
 
 [project.optional-dependencies]
 test = [
@@ -33,6 +35,7 @@ test = [
 
 [tool.setuptools.packages.find]
 where = ["src"]
+exclude = ["tests*"]
 
 [tool.setuptools.package-data]
 "*" = ["*.jinja"]
