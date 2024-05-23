@@ -18,7 +18,7 @@ license = { file = "LICENSE" }
 keywords = ["proxy auto-config", "auto-config", "pac", "wpad", "proxy", "findproxyforurl"]
 requires-python = ">=3.9"
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
