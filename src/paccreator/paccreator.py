@@ -7,15 +7,15 @@ import yaml
 from jinja2 import Environment, FileSystemLoader
 
 from .helpers import sort_by_rating
-from .pypacerconfig import PyPacerConfig
+from .paccreatorconfig import PacCreatorConfig
 
 
-class PyPacer:
+class PacCreator:
     def __init__(self):
-        self.config: Optional[PyPacerConfig] = None
+        self.config: Optional[PacCreatorConfig] = None
 
     def load_from_dict(self, config: dict):
-        self.config = PyPacerConfig(**config)
+        self.config = PacCreatorConfig(**config)
         self.config.validate()
 
     def load_from_yaml(self, config: str):
@@ -78,14 +78,14 @@ class PyPacer:
 
 
 @contextmanager
-def load_from_yaml(config: str) -> PyPacer():
-    p = PyPacer()
+def load_from_yaml(config: str) -> PacCreator():
+    p = PacCreator()
     p.load_from_yaml(config)
     yield p
 
 
 @contextmanager
-def load_from_dict(config: dict) -> PyPacer():
-    p = PyPacer()
+def load_from_dict(config: dict) -> PacCreator():
+    p = PacCreator()
     p.load_from_dict(config)
     yield p

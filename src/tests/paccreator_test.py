@@ -4,53 +4,53 @@ import unittest
 
 from pypac.parser import PACFile
 
-from pypacer import PyPacer
-from pypacer.pypacerconfig import PyPacerConfig
+from paccreator import PacCreator
+from paccreator.paccreatorconfig import PacCreatorConfig
 
 location = pathlib.Path(__file__).parent.resolve()
 
 
-class TestPyPacer(unittest.TestCase):
+class TestPacCreator(unittest.TestCase):
 
     def setUp(self):
         self.pac_file = open(os.path.join(location, "..", "examples", "unittests.yaml"), "r").read()
 
     def test_load_config_from_yaml(self):
-        p = PyPacer()
+        p = PacCreator()
         p.load_from_yaml(self.pac_file)
-        self.assertIsInstance(p.config, PyPacerConfig)
+        self.assertIsInstance(p.config, PacCreatorConfig)
         self.assertEqual(p.config.proxies[0].route, "DIRECT")
         output = p.output()
         open(os.path.join(location, "..", "examples", "unittests.pac"), "w").write(output)
 
     def test_exclude_by_tag(self):
-        p = PyPacer()
+        p = PacCreator()
         p.load_from_yaml(self.pac_file)
         output = p.output(excludes=["foo"])
         self.assertTrue("PROXY netmask.example.com" not in output)
 
     def test_exclude_by_tags(self):
-        p = PyPacer()
+        p = PacCreator()
         p.load_from_yaml(self.pac_file)
         output = p.output(excludes=["foo", "default"])
         self.assertTrue("PROXY netmask.example.com" not in output)
         self.assertTrue("PROXY default.example.com" not in output)
 
     def test_include_by_tag(self):
-        p = PyPacer()
+        p = PacCreator()
         p.load_from_yaml(self.pac_file)
         output = p.output(includes=["foo"])
         self.assertTrue("PROXY netmask.example.com" in output)
 
     def test_include_by_tags(self):
-        p = PyPacer()
+        p = PacCreator()
         p.load_from_yaml(self.pac_file)
         output = p.output(includes=["foo", "default"])
         self.assertTrue("PROXY netmask.example.com" in output)
         self.assertTrue("PROXY default.example.com" in output)
 
     def test_output(self):
-        p = PyPacer()
+        p = PacCreator()
         p.load_from_yaml(self.pac_file)
         pac_file = PACFile(p.output())
         self.assertEqual(pac_file.find_proxy_for_url("", "foo.bar"), "PROXY default.example.com")

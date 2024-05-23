@@ -1,6 +1,6 @@
 # Generate auto proxy config files (PAC) from a declaration
 
-[![Tests](https://github.com/73h/pypacer/actions/workflows/tests.yml/badge.svg)](https://github.com/73h/pypacer/actions/workflows/tests.yml)
+[![Tests](https://github.com/73h/paccreator/actions/workflows/tests.yml/badge.svg)](https://github.com/73h/paccreator/actions/workflows/tests.yml)
 
 ---
 
@@ -12,12 +12,12 @@ subtleties. If you have unusual requirements, it is better to write the proxy sc
 
 You can install the package with pip.
 ```
-pip install pypacer <-- not yet available
+pip install paccreator
 ```
 
 You can also load the script directly from github with pip.
 ```
-pip install git+https://github.com/73h/pypacer.git@main#egg=pypacer
+pip install git+https://github.com/73h/paccreator.git@main#egg=paccreator
 ```
 
 Create a file called myproxy.yaml and define your proxy rules in it like this.
@@ -43,12 +43,22 @@ proxies:
 Run this in python.  
 ```python
 import os
-from pypacer import PyPacer
+from paccreator import PacCreator
 
-p = PyPacer()
+p = PacCreator()
 with open(os.path.join("myproxy.yaml"), "r") as f:
     p.load_from_yaml(f.read())
     print(p.output())
+```
+
+You can also use with contextmanager.
+```python
+import os
+from paccreator import load_from_yaml
+
+with open(os.path.join("myproxy.yaml"), "r") as f:
+    with load_from_yaml(f.read()) as p:
+        print(p.output())
 ```
 
 ## Examples

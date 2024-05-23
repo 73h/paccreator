@@ -1,4 +1,4 @@
-from pypacer import load_from_yaml
+from paccreator import load_from_yaml
 
 if __name__ == "__main__":
     simple_proxy = """

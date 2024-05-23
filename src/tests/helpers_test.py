@@ -1,8 +1,8 @@
 import unittest
 
-from pypacer.helpers import get_target_type, sort_by_rating, is_ipaddress, is_network, \
+from paccreator.helpers import get_target_type, sort_by_rating, is_ipaddress, is_network, \
     is_hostname, TargetType
-from pypacer.pypacerconfig import PyPacerConfig
+from paccreator.paccreatorconfig import PacCreatorConfig
 
 
 class TestHelpers(unittest.TestCase):
@@ -54,7 +54,7 @@ class TestHelpers(unittest.TestCase):
     def test_sort_by_rating(self):
         config = {"proxies": [{"route": "A", "tags": ["default"], "targets": [".example.com"]},
                               {"route": "B", "targets": ["foo.example.com"]}]}
-        config = PyPacerConfig(**config)
+        config = PacCreatorConfig(**config)
         config.recognize_overlaps()
         self.assertEqual(config.proxies[0].route, "A")
         self.assertEqual(config.proxies[1].targets[0].rating, 1)

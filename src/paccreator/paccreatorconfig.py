@@ -1,7 +1,7 @@
 import ipaddress
 from dataclasses import dataclass, field
 
-from pypacer.helpers import get_target_type, TargetType
+from paccreator.helpers import get_target_type, TargetType
 
 
 class Target:
@@ -42,7 +42,7 @@ class Proxy:
 
 
 @dataclass
-class PyPacerConfig:
+class PacCreatorConfig:
     proxies: list
     version: str = "0.1"
     description: str = "pac file for my company"

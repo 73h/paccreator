@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pypacer"
+name = "paccreator"
 version = "0.2.0"
 dynamic = ["dependencies"]
 authors = [
@@ -23,7 +23,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 [project.urls]
-Homepage = "https://github.com/73h/pypacer"
+Homepage = "https://github.com/73h/paccreator"
 
 [project.optional-dependencies]
 test = [

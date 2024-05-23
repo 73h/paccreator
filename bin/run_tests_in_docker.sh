@@ -2,4 +2,4 @@
 
 cd $(dirname "$0")/..
 
-docker compose run --rm pypacer watching_testrunner -- pytest --disable-warnings --tb=short $@
+docker compose run --rm paccreator watching_testrunner -- pytest --disable-warnings --tb=short $@
