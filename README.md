@@ -12,7 +12,7 @@ subtleties. If you have unusual requirements, it is better to write the proxy sc
 
 You can install the package with pip.
 ```
-pip install pypacer
+pip install pypacer <-- not yet available
 ```
 
 You can also load the script directly from github with pip.
