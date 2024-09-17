@@ -60,4 +60,6 @@ def get_target_type(target: str) -> TargetType:
 
 
 def sort_by_rating(proxy):
-    return min([t.rating for t in proxy.targets])
+    if len(proxy.targets) == 1 and TargetType.PLAIN_HOSTNAME in [t.type for t in proxy.targets]:
+        return TargetType.PLAIN_HOSTNAME.value;
+    return min([t.rating for t in proxy.targets if t.type != TargetType.PLAIN_HOSTNAME])

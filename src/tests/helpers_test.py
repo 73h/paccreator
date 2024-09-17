@@ -61,3 +61,19 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(config.proxies[0].targets[0].rating, 4)
         config.proxies.sort(key=sort_by_rating)
         self.assertEqual(config.proxies[0].route, "B")
+
+    def test_sort_by_rating_with_plain_hostname_tag(self):
+        config = {"proxies": [{"route": "A", "tags": ["catch-plain-hostnames"], "targets": [".example.com"]},
+                              {"route": "B", "targets": ["foo.example.com"]}]}
+        config = PacCreatorConfig(**config)
+        config.recognize_overlaps()
+        config.proxies.sort(key=sort_by_rating)
+        self.assertEqual(config.proxies[0].route, "B")
+
+    def test_sort_by_rating_with_plain_hostname_tag_in_exclusive_section(self):
+        config = {"proxies": [{"route": "A", "tags": ["catch-plain-hostnames"], "targets": []},
+                              {"route": "B", "targets": ["foo.example.com"]}]}
+        config = PacCreatorConfig(**config)
+        config.recognize_overlaps()
+        config.proxies.sort(key=sort_by_rating)
+        self.assertEqual(config.proxies[0].route, "A")
